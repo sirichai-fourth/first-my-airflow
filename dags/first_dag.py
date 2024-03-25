@@ -3,7 +3,9 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
 from random import randint
 from datetime import datetime
+import logging
 
+logger = logging.getLogger(__name__)
 def _training_model():
     return randint(1,10)
 
@@ -13,6 +15,7 @@ def _choose_best_model(ti):
         'training_model_B',
         'training_model_C'
     ])
+    logger.info(f"get acc : {accuracies}")
     best_accuracy = max(accuracies)
     if(best_accuracy > 8):
         print('accuracy')
