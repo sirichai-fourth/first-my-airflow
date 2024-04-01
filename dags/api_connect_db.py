@@ -1,3 +1,4 @@
+# load deps
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
@@ -9,9 +10,13 @@ import requests
 import json
 from dotenv import load_dotenv
 
+# load env
 load_dotenv(".env")
+
+# get log
 logger = logging.getLogger(__name__)
 
+# class & function
 class Connection_Mariadb:
     MYSQL_HOST = os.getenv("MYSQL_HOST")
     MYSQL_PORT = int(os.getenv("MYSQL_PORT"))
@@ -89,7 +94,6 @@ def check_connection_db():
         )
         cursor = connection.cursor()
         logger.info("Connected to MariaDB!")
-        return 1
 
     except pymysql.Error as e:
         logger.error(f"Error connecting to MariaDB: {e}")
@@ -100,6 +104,7 @@ def check_connection_db():
             logger.info("Connection closed")
 
 
+# start dags
 default_args = {
     'owner': 'my-secound-dags',
     'start_date': days_ago(1),
